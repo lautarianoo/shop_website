@@ -1,9 +1,21 @@
+from django.core.exceptions import ValidationError
 from django.db import models
+import sys
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 User = get_user_model()
+
+#функциональщина
+class MinResoluitionError(Exception):
+    pass
+
+class MaxResolutionError(Exception):
+    pass
 
 class LatestProductsManager:
 
@@ -27,6 +39,7 @@ class LatestProducts:
 
     objects = LatestProductsManager()
 
+#модели
 class Category(models.Model):
 
     name = models.CharField(max_length=255, verbose_name='Имя категории')
@@ -36,6 +49,9 @@ class Category(models.Model):
         return self.name
 
 class Product(models.Model):
+
+    MIN_SIZE = (400, 400)
+    MAX_SIZE = (900, 900)
 
     class Meta:
         abstract = True
@@ -49,6 +65,21 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+
+        image = self.image
+        img = Image.open(image)
+        new_img = img.convert('RGB')
+        resized_new_img = new_img.resize((200, 200), Image.ANTIALIAS)
+        filestream = BytesIO()
+        resized_new_img.save(filestream, 'JPEG', quality=90)
+        filestream.seek(0)
+        name = '{}.{}'.format(*self.image.name.split('.'))
+        self.image = InMemoryUploadedFile(
+            filestream, 'ImageField', name, 'jpeg/image', sys.getsizeof(filestream), None
+        )
+        super().save(*args, **kwargs)
 
 class Notebook(Product):
 
