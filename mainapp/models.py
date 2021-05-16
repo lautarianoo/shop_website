@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 import sys
 from django.contrib.auth import get_user_model
@@ -7,10 +6,17 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from PIL import Image
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.urls import reverse
 
-User = get_user_model()
+
 
 #функциональщина
+User = get_user_model()
+
+def get_product_url(obj, viewname):
+    ct_model = obj.__class__._meta.model_name
+    return reverse(viewname, kwargs={'ct_model': ct_model, 'slug': obj.slug})
+
 class MinResoluitionError(Exception):
     pass
 
@@ -92,6 +98,9 @@ class Notebook(Product):
     def __str__(self):
         return f"{self.category.name}: {self.title}"
 
+    def get_absolute_url(self):
+        return get_product_url(self, 'product_detail')
+
 
 class SmartPhone(Product):
 
@@ -107,6 +116,9 @@ class SmartPhone(Product):
 
     def __str__(self):
         return f"{self.category.name}: {self.title}"
+
+    def get_absolute_url(self):
+        return get_product_url(self, 'product_detail')
 
 class CartProduct(models.Model):
 
