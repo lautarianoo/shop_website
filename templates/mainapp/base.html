@@ -45,6 +45,7 @@
                     </div>
                 </div>
                 <div class="col-lg-9">
+                    {% block content %}
                     <div class="carousel slide my-4" id="carouselExampleIndicators" data-ride="carousel">
                         <ol class="carousel-indicators">
                             <li class="active" data-target="#carouselExampleIndicators" data-slide-to="0"></li>
@@ -133,6 +134,7 @@
                             </div>
                         </div>
                     </div>
+                    {% endblock content %}
                 </div>
             </div>
         </div>

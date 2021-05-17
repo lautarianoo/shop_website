@@ -77,7 +77,7 @@ class Product(models.Model):
         image = self.image
         img = Image.open(image)
         new_img = img.convert('RGB')
-        resized_new_img = new_img.resize((200, 200), Image.ANTIALIAS)
+        resized_new_img = new_img.resize((600, 600), Image.ANTIALIAS)
         filestream = BytesIO()
         resized_new_img.save(filestream, 'JPEG', quality=90)
         filestream.seek(0)
