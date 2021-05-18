@@ -110,7 +110,8 @@ class SmartPhone(Product):
     accum_volume = models.CharField(max_length=255, verbose_name='Объём батареи')
     ram = models.CharField(max_length=255, verbose_name='Оперативная память')
     sd = models.BooleanField(default=True)
-    sd_volume = models.CharField(max_length=255, verbose_name='Макс. объём SD')
+    sd_volume = models.CharField(max_length=255, verbose_name='Макс. объём SD',
+                                 null=True, blank=True)
     main_cam_mp = models.CharField(max_length=255, verbose_name='Главная камера')
     frontal_cam_mp = models.CharField(max_length=255, verbose_name='Фронтальная камера')
 
@@ -119,6 +120,12 @@ class SmartPhone(Product):
 
     def get_absolute_url(self):
         return get_product_url(self, 'product_detail')
+
+    @property
+    def sd(self):
+        if self.sd:
+            return 'Да'
+        return 'Нет'
 
 class CartProduct(models.Model):
 
