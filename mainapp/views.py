@@ -1,12 +1,16 @@
 from django.shortcuts import render
-from django.views.generic import DetailView
+from django.views.generic import DetailView, View
 from .models import Notebook, SmartPhone, Category
+from .mixins import CategoryDetailMixin
 
-def index(request):
-    categories = Category.objects.get_category_for_left_sidebar()
-    return render(request, 'mainapp/base.html', {'categories': categories})
+class HomeBaseView(View):
 
-class ProductDetailView(DetailView):
+    def get(self, request, *args, **kwargs):
+        categories = Category.objects.get_category_for_left_sidebar()
+        return render(request, 'mainapp/base.html', {'categories': categories})
+
+
+class ProductDetailView(CategoryDetailMixin, DetailView):
 
     CT_MODEL_MODEL_CLASS = {
         'notebook': Notebook,
@@ -23,7 +27,7 @@ class ProductDetailView(DetailView):
     slug_url_kwarg = 'slug'
 
 
-class CategoryDetailView(DetailView):
+class CategoryDetailView(CategoryDetailMixin, DetailView):
     model = Category
     queryset = Category.objects.all()
     context_object_name = 'category'
