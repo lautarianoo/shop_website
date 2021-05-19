@@ -54,7 +54,7 @@ def product_spec(product):
     model_name = product.__class__._meta.model_name
     if isinstance(product, SmartPhone):
         if not product.sd:
-            PRODUCT_SPEC['smartphone'].pop('Макс. объём SD')
+            PRODUCT_SPEC['smartphone'].pop('Макс. объём SD', None)
         else:
             PRODUCT_SPEC['smartphone']['Макс. объём SD'] = 'sd_volume'
     return mark_safe(TABLE_HEAD + get_product_spec(product, model_name) + TABLE_TAIL)

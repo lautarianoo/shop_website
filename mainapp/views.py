@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from django.views.generic import DetailView, View
-from .models import Notebook, SmartPhone, Category
+from .models import Notebook, SmartPhone, Category, LatestProducts
 from .mixins import CategoryDetailMixin
 
 class HomeBaseView(View):
 
     def get(self, request, *args, **kwargs):
         categories = Category.objects.get_category_for_left_sidebar()
-        return render(request, 'mainapp/base.html', {'categories': categories})
+        products = LatestProducts.objects.get_products_for_mainpage('notebook', 'smartphone')
+        return render(request, 'mainapp/base.html', {'categories': categories, 'products': products})
 
 
 class ProductDetailView(CategoryDetailMixin, DetailView):
