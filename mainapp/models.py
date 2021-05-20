@@ -148,16 +148,11 @@ class SmartPhone(Product):
     def get_absolute_url(self):
         return get_product_url(self, 'product_detail')
 
-    @property
-    def sd(self):
-        if self.sd:
-            return 'Да'
-        return 'Нет'
 
 class CartProduct(models.Model):
 
     user = models.ForeignKey('Customer', verbose_name='Юзер', on_delete=models.CASCADE)
-    card = models.ForeignKey('Cart', verbose_name='Корзина', on_delete=models.CASCADE, related_name='related_products')
+    cart = models.ForeignKey('Cart', verbose_name='Корзина', on_delete=models.CASCADE, related_name='related_products')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
@@ -166,6 +161,11 @@ class CartProduct(models.Model):
 
     def __str__(self):
         return f"Корзина - {self.user}"
+
+    def save(self, *args, **kwargs):
+        self.total_price = self.quality * self.content_object.price
+        super().save(*args, **kwargs)
+
 
 class Cart(models.Model):
 
@@ -186,6 +186,5 @@ class Customer(models.Model):
     phone = models.CharField(max_length=20, verbose_name='Номер телефона')
     address = models.CharField(max_length=255, verbose_name='Адрес')
 
-    def __str__(self):
-        return self.user.first_name, '-', self.user.last_name
-
+    #def __str__(self):
+        #return self.user

@@ -17,7 +17,8 @@
         <h3>{{ product.title }}</h3>
         <p>Цена:{{ product.price }} рублей</p>
         <p>Описание: {{ product.description }}</p>
-
+        <hr>
+        <a href="{% url 'add_to_card' ct_model=ct_model slug=product.slug %}"><button class="btn btn-danger">Добавить в корзину</button></a>
     </div>
     <h2 class="mt-4">Характеристики: </h2>
 
