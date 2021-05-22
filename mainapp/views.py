@@ -4,6 +4,7 @@ from django.views.generic import DetailView, View
 from .models import Notebook, SmartPhone, Category, LatestProducts, Customer, Cart, CartProduct
 from .mixins import CategoryDetailMixin, CartMixin
 from django.contrib.contenttypes.models import ContentType
+from django.contrib import messages
 
 class HomeBaseView(CartMixin, View):
 
@@ -32,6 +33,7 @@ class ProductDetailView(CartMixin, CategoryDetailMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['ct_model'] = self.model._meta.model_name
+        context['cart'] = self.cart
         return context
 
 
@@ -41,6 +43,11 @@ class CategoryDetailView(CartMixin, CategoryDetailMixin, DetailView):
     context_object_name = 'category'
     template_name = 'mainapp/category_detail.html'
     slug_url_kwarg = 'slug'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cart'] = self.cart
+        return context
 
 class AddtoCartView(CartMixin, View):
 
@@ -54,6 +61,7 @@ class AddtoCartView(CartMixin, View):
         if created:
             self.cart.products.add(cart_product)
         self.cart.save()
+        messages.add_message(request, messages.INFO, 'Товар успешно добавлен')
         return HttpResponseRedirect('/cart/')
 
 class DeleteFromCartView(CartMixin, View):
@@ -68,6 +76,7 @@ class DeleteFromCartView(CartMixin, View):
         self.cart.products.remove(cart_product)
         cart_product.delete()
         self.cart.save()
+        messages.add_message(request, messages.INFO, 'Товар успешно удален')
         return HttpResponseRedirect('/cart/')
 
 class CartView(CartMixin, View):
@@ -80,3 +89,18 @@ class CartView(CartMixin, View):
         }
 
         return render(request, 'mainapp/cart.html', context)
+
+class ChangeQTYView(CartMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        ct_model, product_slug = kwargs.get('ct_model'), kwargs.get('slug')
+        content_type = ContentType.objects.get(model=ct_model)
+        product = content_type.model_class().objects.get(slug=product_slug)
+        cart_product = CartProduct.objects.get(
+            user=self.cart.owner, cart=self.cart, content_type=content_type, object_id=product.id
+        )
+        cart_product.quality = int(request.POST.get('qty'))
+        cart_product.save()
+        self.cart.save()
+        messages.add_message(request, messages.INFO, 'Количество изменено')
+        return HttpResponseRedirect('/cart/')

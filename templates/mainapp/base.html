@@ -32,7 +32,7 @@
                     <h1 class="my-4">Shop Name</h1>
                     <div class="list-group">
                         {% for category in categories %}
-                        <a class="list-group-item" href="{{ category.ur }}">{{ category.name }}</a>
+                        <a class="list-group-item" href="{{ category.url }}">{{ category.name }}</a>
                         {% endfor %}
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                             <span class="sr-only">Next</span>
                         </a>
                     </div>
-                    <div class="row">
+             <div class="row">
               {% for product in products %}
               <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card h-100">

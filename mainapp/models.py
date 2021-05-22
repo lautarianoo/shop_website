@@ -177,19 +177,20 @@ class Cart(models.Model):
 
     owner = models.ForeignKey('Customer', verbose_name='Владелец', on_delete=models.CASCADE, null=True)
     products = models.ManyToManyField(CartProduct, blank=True, related_name='related_cart')
-    total_products = models.PositiveIntegerField(default=0)
+    total_products = models.PositiveIntegerField(default=0, null=True)
     total_price = models.DecimalField(max_digits=9, default=0, decimal_places=2, verbose_name='Общая цена')
     in_order = models.BooleanField(default=False)
     for_anonymous_user = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        cart_data = self.products.aggregate(models.Sum('total_price'), models.Count('id'))
+        cart_data = self.products.aggregate(models.Sum('total_price'), models.Count('id'), models.Sum('quality'))
         if cart_data.get('total_price__sum'):
             self.total_price = cart_data['total_price__sum']
         else:
             self.total_price = 0
-        self.total_products = cart_data['id__count']
+        self.total_products = cart_data['quality__sum'] #cart_data['id__count']
         super().save(*args, **kwargs)
+
 
     def __str__(self):
         return f"Корзина пользователя №{self.owner.id}"
