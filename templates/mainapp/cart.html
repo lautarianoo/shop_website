@@ -45,6 +45,7 @@
       <td>Итого:</td>
       <td>{{ cart.total_products }}</td>
       <td><strong>{{ cart.total_price }} руб.</strong></td>
+      <td><a href="{% url 'checkout' %}"><button class="btn btn-primary">Перейти к оформлению заказа</button></a></td>
   </tr>
   </tbody>
 </table>

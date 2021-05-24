@@ -184,18 +184,9 @@ class Cart(models.Model):
     in_order = models.BooleanField(default=False)
     for_anonymous_user = models.BooleanField(default=False)
 
-    def save(self, *args, **kwargs):
-        cart_data = self.products.aggregate(models.Sum('total_price'), models.Count('id'), models.Sum('quality'))
-        if cart_data.get('total_price__sum'):
-            self.total_price = cart_data['total_price__sum']
-        else:
-            self.total_price = 0
-        self.total_products = cart_data['quality__sum'] #cart_data['id__count']
-        super().save(*args, **kwargs)
 
-
-    def __str__(self):
-        return f"Корзина пользователя №{self.owner.id}"
+    #def __str__(self):
+        #return f"Корзина пользователя №{self.owner.id}"
 
 
 class Customer(models.Model):
@@ -233,6 +224,7 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, verbose_name='Покупатель', related_name='related_orders',on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255, verbose_name='Имя')
     last_name = models.CharField(max_length=255, verbose_name='Фамилия')
+    cart = models.ForeignKey(Cart, verbose_name='Корзина', on_delete=models.CASCADE, null=True, blank=True)
     phone = models.CharField(max_length=20, verbose_name='Номер телефона')
     address = models.CharField(max_length=1024, verbose_name='Адрес', null=True, blank=True)
     status = models.CharField(max_length=100, verbose_name='Статус заказа', choices=STATUS_CHOICES, default=STATUS_NEW)
@@ -242,5 +234,5 @@ class Order(models.Model):
     order_date = models.DateField(verbose_name='Дата получения заказа', default=timezone.now)
 
     def __str__(self):
-        return f'Покупатель - #{self.customer.id}. Дата - {self.created_at}'
+        return f'Покупатель - #{self.customer.id}. Дата - {self.order_date}'
 
