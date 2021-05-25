@@ -1,11 +1,29 @@
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from .serializers import CategorySerializer, SmartphoneSerializer, NotebookSerializer
 from..models import Category, SmartPhone, Notebook
 from rest_framework.filters import SearchFilter
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+from collections import OrderedDict
+
+class CategoryPagination(PageNumberPagination):
+
+    page_size = 2
+    page_query_param = 'page_size'
+    max_page_size = 10
+
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('count', self.page.paginator.count),
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('items', data)
+        ]))
 
 class CategoryListView(ListAPIView):
 
     serializer_class = CategorySerializer
+    pagination_class = CategoryPagination
     queryset = Category.objects.all()
 
 class SmartphoneListView(ListAPIView):
@@ -21,3 +39,13 @@ class NotebookListView(ListAPIView):
     queryset = Notebook.objects.all()
     filter_backends = [SearchFilter]
     search_fields = ['price', 'title']
+
+class SmartphoneDetailView(RetrieveAPIView):
+
+    serializer_class = SmartphoneSerializer
+    queryset = SmartPhone.objects.all()
+
+class NotebookDetailView(RetrieveAPIView):
+
+    serializer_class = NotebookSerializer
+    queryset = Notebook.objects.all()
