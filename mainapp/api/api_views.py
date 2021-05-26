@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, RetrieveUpdateAPIView
 from .serializers import CategorySerializer, SmartphoneSerializer, NotebookSerializer
 from..models import Category, SmartPhone, Notebook
 from rest_framework.filters import SearchFilter
@@ -20,11 +20,12 @@ class CategoryPagination(PageNumberPagination):
             ('items', data)
         ]))
 
-class CategoryListView(ListAPIView):
+class CategoryAPIView(ListCreateAPIView, RetrieveUpdateAPIView):
 
     serializer_class = CategorySerializer
     pagination_class = CategoryPagination
     queryset = Category.objects.all()
+    lookup_field = 'id'
 
 class SmartphoneListView(ListAPIView):
 
