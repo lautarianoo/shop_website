@@ -1,3 +1,4 @@
+import stripe
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, View
@@ -111,12 +112,21 @@ class ChangeQTYView(CartMixin, View):
 class CheckoutView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
+        stripe.api_key = "sk_test_51IvmpHFwUowpEFtOjp3PDwRp4G8JG6y0HGQBaCQGPfFb81J8R9PuqFHyIXk05MWiT1qcZTbEmhS0Go0Na3hfvbRT003Glrvi7M"
+
+        intent = stripe.PaymentIntent.create(
+            amount=int(self.cart.total_price * 100),
+            currency='rub',
+            # Verify your integration in this guide by including this parameter
+            metadata={'integration_check': 'accept_a_payment'},
+        )
         categories = Category.objects.get_category_for_left_sidebar()
         form = OrderForm(request.POST or None)
         context = {
             'cart': self.cart,
             'categories': categories,
             'form': form,
+            'client_secret': intent.client_secret,
         }
 
         return render(request, 'mainapp/checkout.html', context)
