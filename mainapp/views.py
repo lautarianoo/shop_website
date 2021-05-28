@@ -177,4 +177,3 @@ class PayedOnlineOrderView(CartMixin, View):
         new_order.save()
         customer.orders.add(new_order)
         return JsonResponse({'status': 'payed'})
-

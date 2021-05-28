@@ -227,7 +227,7 @@ class Order(models.Model):
     first_name = models.CharField(max_length=255, verbose_name='Имя')
     last_name = models.CharField(max_length=255, verbose_name='Фамилия')
     cart = models.ForeignKey(Cart, verbose_name='Корзина', on_delete=models.CASCADE, null=True, blank=True)
-    phone = models.CharField(max_length=20, verbose_name='Номер телефона')
+    phone = models.CharField(max_length=20, verbose_name='Номер телефона', null=True)
     address = models.CharField(max_length=1024, verbose_name='Адрес', null=True, blank=True)
     status = models.CharField(max_length=100, verbose_name='Статус заказа', choices=STATUS_CHOICES, default=STATUS_NEW)
     buying_type = models.CharField(max_length=100, verbose_name='Тип заказа', choices=BUYING_TYPE_CHOICES, default=BUYING_TYPE_SELF)
@@ -237,4 +237,3 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Покупатель - #{self.customer.id}. Дата - {self.order_date}'
-

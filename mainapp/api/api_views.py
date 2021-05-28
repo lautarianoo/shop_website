@@ -50,3 +50,4 @@ class NotebookDetailView(RetrieveAPIView):
 
     serializer_class = NotebookSerializer
     queryset = Notebook.objects.all()
+
