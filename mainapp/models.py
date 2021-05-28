@@ -194,7 +194,7 @@ class Customer(models.Model):
     user = models.ForeignKey(User, verbose_name='Юзер', on_delete=models.CASCADE)
     phone = models.CharField(max_length=20, verbose_name='Номер телефона', null=True, blank=True)
     address = models.CharField(max_length=255, verbose_name='Адрес', null=True, blank=True)
-    orders = models.ManyToManyField('Order', verbose_name='Заказы покупателя', related_name='related_customer')
+    orders = models.ManyToManyField('Order', verbose_name='Заказы покупателя', related_name='related_customer', blank=True)
 
     #def __str__(self):
         #return self.user
@@ -205,11 +205,13 @@ class Order(models.Model):
     STATUC_IN_PROGRESS = 'in_progress'
     STATUC_READY = 'is_ready'
     STATUC_COMPLETED = 'completed'
+    STATUS_PAYED = 'payed'
 
     BUYING_TYPE_SELF = 'self'
     BUYING_TYPE_DELIVERY = 'delivery'
 
     STATUS_CHOICES = (
+        (STATUS_PAYED, 'Заказ оплачен'),
         (STATUS_NEW, 'Новый заказ'),
         (STATUC_IN_PROGRESS, 'Заказ в обработке'),
         (STATUC_READY, 'Заказ готов'),
