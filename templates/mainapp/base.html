@@ -28,7 +28,11 @@
                                 <a class="navbar-link text-light" style="text-decoration: none" href="{% url 'login' %}">Авторизация</a>
                             </li>
                             <li>
-                                <a class="navbar-link text-light" style="margin-left: 15px; text-decoration: none" href="#">Регистрация</a>
+                                <a class="navbar-link text-light" style="margin-left: 15px; text-decoration: none" href="{% url 'register' %}">Регистрация</a>
+                            </li>
+                        {% else %}
+                            <li style="margin-right: 20px">
+                                <a class="navbar-link text-light" style="margin-left: 15px; text-decoration: none" href="{% url 'logout' %}">Выйти</a>
                             </li>
                         {% endif %}
                         <li class="nav-item">
