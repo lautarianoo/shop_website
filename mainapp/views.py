@@ -9,6 +9,7 @@ from django.contrib import messages
 from .forms import *
 from .utils import recalc_cart
 from django.db import transaction
+from django.contrib.auth import authenticate, login
 
 class HomeBaseView(CartMixin, View):
 
@@ -177,3 +178,23 @@ class PayedOnlineOrderView(CartMixin, View):
         new_order.save()
         customer.orders.add(new_order)
         return JsonResponse({'status': 'payed'})
+
+class LoginView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        form = LoginForm(request.POST or None)
+        categories = Category.objects.all()
+        context = {'form': form, 'categories': categories, 'cart': self.cart}
+        return render(request, 'mainapp/login.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user:
+                login(request, user)
+                return HttpResponseRedirect('/')
+        return render(request, 'mainapp/login.html', {'form': form, 'cart': self.cart})
+

@@ -25,7 +25,7 @@
                     <ul class="navbar-nav">
                         {% if not request.user.is_authenticated %}
                             <li>
-                                <a class="navbar-link text-light" style="text-decoration: none" href="#">Авторизация</a>
+                                <a class="navbar-link text-light" style="text-decoration: none" href="{% url 'login' %}">Авторизация</a>
                             </li>
                             <li>
                                 <a class="navbar-link text-light" style="margin-left: 15px; text-decoration: none" href="#">Регистрация</a>

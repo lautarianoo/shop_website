@@ -1,0 +1,17 @@
+{% extends 'mainapp/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="row" style="margin-bottom: 300px; margin-top: 180px;">
+    <div class="col-md-6 col-lg-offset-3">
+        <h3 class="text-center">Авторизация</h3>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" class="btn btn-primary" value="Войти">
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
