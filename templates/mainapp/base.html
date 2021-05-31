@@ -38,7 +38,7 @@
                         <li class="nav-item">
                             {% if request.user.is_authenticated %}
                                 <span class="navbar-text text-light">Здравствуйте, <span class="badge badge-danger">
-                                    <a style="text-decoration: none; font-size: 14px;" href="#">{{ request.user.username }}</a>{% endif %}
+                                    <a style="text-decoration: none; font-size: 14px;" href="{% url 'profile' %}">{{ request.user.username }}</a>{% endif %}
                                 </span></span>
                         </li>
                     </ul>

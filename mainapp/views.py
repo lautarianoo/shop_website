@@ -226,3 +226,13 @@ class RegistrationView(CartMixin, View):
             return HttpResponseRedirect('/login/')
         return render(request, 'mainapp/register.html', {'form': form, 'cart': self.cart})
 
+class ProfileView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        customer = Customer.objects.get(user=request.user)
+        orders = Order.objects.filter(customer=customer).order_by('-created_at')
+        categories = Category.objects.all()
+        return render(request, 'mainapp/profile.html', {'orders': orders, 'cart': self.cart, 'categories': categories})
+
+
+
