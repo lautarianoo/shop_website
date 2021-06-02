@@ -25,11 +25,11 @@
   <tbody>
   {% for item in cart.products.all %}
     <tr>
-      <th scope="row">{{ item.content_object.title }}</th>
-      <td class="w-25"><img src="{{ item.content_object.image.url }}" class="img-fluid"></td>
-      <td>{{ item.content_object.price }} руб.</td>
+      <th scope="row">{{ item.product.title }}</th>
+      <td class="w-25"><img src="{{ item.product.image.url }}" class="img-fluid"></td>
+      <td>{{ item.price }} руб.</td>
       <td>
-          <form action="{% url 'change_qty_from_card'  ct_model=item.content_object.get_model_name slug=item.content_object.slug %}" method="post">
+          <form action="{% url 'change_qty_from_card'  slug=item.product.slug %}" method="post">
               {% csrf_token %}
               <input type="number" value="{{ item.quality }}" name="qty" class="form-control" style="width: 70px;" min="1">
               <br>
@@ -37,7 +37,7 @@
           </form>
       </td>
       <td>{{ item.total_price }}</td>
-        <td><a href="{% url 'delete_from_card'  ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"><button class="btn btn-danger">Удалить из корзины</button></a></td>
+        <td><a href="{% url 'delete_from_card'  slug=item.product.slug %}"><button class="btn btn-danger">Удалить из корзины</button></a></td>
     </tr>
   {% endfor %}
   <tr>

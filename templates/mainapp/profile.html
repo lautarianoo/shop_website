@@ -26,7 +26,7 @@
                     <td>
                         <ul>
                             {% for item in order.cart.products.all %}
-                                <li>{{ item.content_object.title }} x {{ item.quality }}</li>
+                                <li>{{ item.product.title }} x {{ item.quality }}</li>
                             {% endfor %}
                         </ul>
                     </td>
@@ -54,9 +54,9 @@
                                       <tbody>
                                         {% for item in order.cart.products.all %}
                                             <tr>
-                                                <th scope="row">{{ item.content_object.title }}</th>
-                                                <td class="w-25"><img src="{{ item.content_object.image.url }}" class="img-fluid"></td>
-                                                <td><strong>{{ item.content_object.price }}</strong> руб.</td>
+                                                <th scope="row">{{ item.product.title }}</th>
+                                                <td class="w-25"><img src="{{ item.product.image.url }}" class="img-fluid"></td>
+                                                <td><strong>{{ item.product.price }}</strong> руб.</td>
                                                 <td>{{ item.quality }}</td>
                                                 <td>{{ item.total_price }} руб.</td>
                                             </tr>

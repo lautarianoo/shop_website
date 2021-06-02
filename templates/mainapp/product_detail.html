@@ -1,5 +1,4 @@
 {% extends 'mainapp/base.html' %}
-{% load specifications %}
 {% block content %}
 
 <div class="row">
@@ -18,11 +17,8 @@
         <p>Цена:{{ product.price }} рублей</p>
         <p>Описание: {{ product.description }}</p>
         <hr>
-        <a href="{% url 'add_to_card' ct_model=ct_model slug=product.slug %}"><button class="btn btn-danger">Добавить в корзину</button></a>
+        <a href="{% url 'add_to_card' slug=product.slug %}"><button class="btn btn-danger">Добавить в корзину</button></a>
     </div>
-    <h2 class="mt-4">Характеристики: </h2>
-
-    {{ product|product_spec }}
 </div>
 
 {% endblock content %}
