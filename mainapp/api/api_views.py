@@ -1,6 +1,6 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView, RetrieveUpdateAPIView
-from .serializers import CategorySerializer, SmartphoneSerializer, NotebookSerializer
-from..models import Category, SmartPhone, Notebook
+from .serializers import CategorySerializer
+from..models import Category
 from rest_framework.filters import SearchFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
@@ -27,27 +27,27 @@ class CategoryAPIView(ListCreateAPIView, RetrieveUpdateAPIView):
     queryset = Category.objects.all()
     lookup_field = 'id'
 
-class SmartphoneListView(ListAPIView):
-
-    serializer_class = SmartphoneSerializer
-    queryset = SmartPhone.objects.all()
-    filter_backends = [SearchFilter]
-    search_fields = ['price', 'title']
-
-class NotebookListView(ListAPIView):
-
-    serializer_class = NotebookSerializer
-    queryset = Notebook.objects.all()
-    filter_backends = [SearchFilter]
-    search_fields = ['price', 'title']
-
-class SmartphoneDetailView(RetrieveAPIView):
-
-    serializer_class = SmartphoneSerializer
-    queryset = SmartPhone.objects.all()
-
-class NotebookDetailView(RetrieveAPIView):
-
-    serializer_class = NotebookSerializer
-    queryset = Notebook.objects.all()
+#class SmartphoneListView(ListAPIView):
+#
+#    serializer_class = SmartphoneSerializer
+#    queryset = SmartPhone.objects.all()
+#    filter_backends = [SearchFilter]
+#    search_fields = ['price', 'title']
+#
+#class NotebookListView(ListAPIView):
+#
+#    serializer_class = NotebookSerializer
+#    queryset = Notebook.objects.all()
+#    filter_backends = [SearchFilter]
+#    search_fields = ['price', 'title']
+#
+#class SmartphoneDetailView(RetrieveAPIView):
+#
+#    serializer_class = SmartphoneSerializer
+#    queryset = SmartPhone.objects.all()
+#
+#class NotebookDetailView(RetrieveAPIView):
+#
+#    serializer_class = NotebookSerializer
+#    queryset = Notebook.objects.all()
 
