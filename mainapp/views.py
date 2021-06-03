@@ -10,6 +10,7 @@ from .forms import *
 from .utils import recalc_cart
 from django.db import transaction
 from django.contrib.auth import authenticate, login
+from specs.models import ProductFeatures
 
 class HomeBaseView(CartMixin, View):
 
@@ -221,5 +222,13 @@ class ProfileView(CartMixin, View):
         categories = Category.objects.all()
         return render(request, 'mainapp/profile.html', {'orders': orders, 'cart': self.cart, 'categories': categories})
 
+class SpecsView(CartMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        print(kwargs)
+        product_slug = kwargs.get('slug')
+        product = Product.objects.get(slug=product_slug)
+        features = ProductFeatures.objects.filter(product=product)
+        return render(request, 'mainapp/product_detail.html', {'features': features})
 
 

@@ -19,6 +19,18 @@
         <hr>
         <a href="{% url 'add_to_card' slug=product.slug %}"><button class="btn btn-danger">Добавить в корзину</button></a>
     </div>
+    <h2 class="mt-4">Характеристики: </h2>
+
+        <table class="table">
+      <tbody>
+      {% for feature in product.features.all %}
+        <tr>
+          <td>{{ feature.feature.feature_name }}: {{ feature.value }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
 </div>
 
 {% endblock content %}

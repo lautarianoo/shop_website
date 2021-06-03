@@ -13,10 +13,9 @@
 
         <div class="col-md-4">
             <div class="list-group">
-                <a href="{% url 'add_category' %}" class="list-group-item list-group-item actions">Создать новую категорию</a>
-                <a href="#" class="list-group-item list-group-item actions">Создать новую характеристику</a>
-                <a href="#" class="list-group-item list-group-item actions">Создать значение характеристики</a>
-                <a href="#" class="list-group-item list-group-item actions">Создать характеристику для товара</a>
+                <a href="{% url 'add_category' %}" class="list-group-item list-group-item actions {% if request.path == '/product-specs/add_category/' %}active{% endif %}">Создать новую категорию</a>
+                <a href="{% url 'new_feature' %}" class="list-group-item list-group-item actions {% if request.path == '/product-specs/new_feature/' %}active{% endif %}">Создать новую характеристику</a>
+                <a href="{% url "new_feature_product" %}" class="list-group-item list-group-item actions {% if request.path == '/product-specs/new_feature_product/' %}active{% endif %}">Создать характеристику для товара</a>
                 <a href="#" class="list-group-item list-group-item actions">Редактировать характеристики товара</a>
             </div>
         </div>
