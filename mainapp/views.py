@@ -1,5 +1,5 @@
 import stripe
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic import DetailView, View
 from .models import Category, Product, Customer, Cart, CartProduct, Order
@@ -185,7 +185,6 @@ class LoginView(CartMixin, View):
             if user:
                 login(request, user)
                 return HttpResponseRedirect('/')
-
         return render(request, 'mainapp/login.html', {'form': form, 'cart': self.cart})
 
 class RegistrationView(CartMixin, View):
@@ -222,13 +221,16 @@ class ProfileView(CartMixin, View):
         categories = Category.objects.all()
         return render(request, 'mainapp/profile.html', {'orders': orders, 'cart': self.cart, 'categories': categories})
 
-class SpecsView(CartMixin, View):
+class SearchingView(CartMixin, View):
 
     def get(self, request, *args, **kwargs):
-        print(kwargs)
-        product_slug = kwargs.get('slug')
-        product = Product.objects.get(slug=product_slug)
-        features = ProductFeatures.objects.filter(product=product)
-        return render(request, 'mainapp/product_detail.html', {'features': features})
-
-
+        filters = {
+            'title__icontains': request.GET.get('q'),
+            'sale': request.GET.get('sale')
+        }
+        if 'sale' in filters.keys() and filters.get('sale') == 'on':
+            filters['sale'] = True
+        else:
+            filters.pop('sale')
+        products = Product.objects.filter(**filters)
+        return render(request, 'mainapp/base.html', {'products': products})
