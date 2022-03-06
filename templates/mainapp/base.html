@@ -48,21 +48,17 @@
         <!-- Page Content-->
         <div class="container">
             <div class="row">
-        <div class="album py-5">
-
-    <form action="" class="input-group rounded mb-5" method="get">
-  <input type="search" class="form-control rounded" placeholder="Название товара" aria-label="Search"
-    aria-describedby="search-addon" name="q" />
-  <span class="input-group-text border-0" id="search-addon">
-      <label for="checkbox-free" style="margin-right: 5px;">Распродажа</label>
-    <input id="checkbox-free" type="checkbox" name="sale" style="margin-right: 5px">
-    <button class="btn btn-success" type="submit">Искать</button>
-  </span>
-</form>
-    </div>
-        </div>
-                <div class="col-lg-9">
-                    {% block content %}
+            {% block content %}
+            <form action="{% url 'search' %}" class="input-group rounded mt-2" method="get">
+                   <input type="search" class="form-control rounded" placeholder="Название товара" aria-label="Search"
+               aria-describedby="search-addon" name="q" />
+             <span class="input-group-text border-0" id="search-addon">
+                 <label for="checkbox-free" style="margin-right: 5px;">Распродажа</label>
+               <input id="checkbox-free" type="checkbox" name="sale" style="margin-right: 5px">
+               <button class="btn btn-success" type="submit">Искать</button>
+             </span>
+        </form>
+                <div class="col-lg-10">
                         {% if messages %}
                         {% for message in messages %}
                             <div class="alert alert-success alert-dismissible fade show mt-5" role="alert">
@@ -71,11 +67,10 @@
                         </div>
                         {% endfor %}
                     {% endif %}
-
              <div class="row">
               {% for product in products %}
               <div class="col-lg-4 col-md-6 mb-4" style="margin-top: 5%">
-                <div class="card h-100">
+                <div class="card h-50">
                   <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt=""></a>
                   <div class="card-body">
                     <h4 class="card-title">
