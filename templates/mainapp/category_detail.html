@@ -10,10 +10,19 @@
     </nav>
 
 <div class="row">
-              {% for product in category_products %}
-              <div class="col-lg-4 col-md-6 mb-4">
+    <form action="{% url 'search' %}" class="input-group rounded mt-2" method="get">
+                   <input type="search" class="form-control rounded" placeholder="Название товара" aria-label="Search"
+               aria-describedby="search-addon" name="q" />
+             <span class="input-group-text border-0" id="search-addon">
+                 <label for="checkbox-free" style="margin-right: 5px;">Распродажа</label>
+               <input id="checkbox-free" type="checkbox" name="sale" style="margin-right: 5px">
+               <button class="btn btn-success" type="submit">Искать</button>
+             </span>
+        </form>
+              {% for product in products %}
+              <div class="col-lg-4 col-md-6 mb-4 mt-2">
                 <div class="card h-100">
-                  <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt=""></a>
+                  <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt="" height="200"></a>
                   <div class="card-body">
                     <h4 class="card-title">
                       <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>

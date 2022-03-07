@@ -9,8 +9,9 @@
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-        <script src="https://js.stripe.com/v3/"></script>
-        <!-- Core theme CSS (includes Bootstrap)-->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </head>
     <body>
         <!-- Navigation-->
@@ -47,9 +48,23 @@
         </nav>
         <!-- Page Content-->
         <div class="container">
-            <div class="row">
-            {% block content %}
-            <form action="{% url 'search' %}" class="input-group rounded mt-2" method="get">
+        {% block content %}
+            <div class="row  mt-2">
+            <div class="col-2">
+                    <div class="dropdown show">
+                      <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Категория
+                      </a>
+
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                          {% for category in categories %}
+                             <a class="dropdown-item" href="{% url 'category_detail' slug=category.slug %}">{{ category.name }}</a>
+                          {% endfor %}
+                      </div>
+                    </div>
+                </div>
+            <div class="col-10">
+            <form action="{% url 'search' %}" class="input-group rounded" method="get">
                    <input type="search" class="form-control rounded" placeholder="Название товара" aria-label="Search"
                aria-describedby="search-addon" name="q" />
              <span class="input-group-text border-0" id="search-addon">
@@ -58,6 +73,9 @@
                <button class="btn btn-success" type="submit">Искать</button>
              </span>
         </form>
+            </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-10">
                         {% if messages %}
                         {% for message in messages %}
@@ -70,8 +88,8 @@
              <div class="row">
               {% for product in products %}
               <div class="col-lg-4 col-md-6 mb-4" style="margin-top: 5%">
-                <div class="card h-50">
-                  <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt=""></a>
+                <div class="card h-100">
+                  <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt="" height="200"></a>
                   <div class="card-body">
                     <h4 class="card-title">
                       <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
