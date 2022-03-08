@@ -10,7 +10,6 @@ from .forms import *
 from .utils import recalc_cart
 from django.db import transaction
 from django.contrib.auth import authenticate, login
-from specs.models import ProductFeatures
 
 class HomeBaseView(CartMixin, View):
 

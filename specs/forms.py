@@ -1,6 +1,6 @@
 from django import forms
 from mainapp.models import Category
-from .models import CategoryFeature, ProductFeatures
+from .models import CategoryFeature
 
 class NewCategoryForm(forms.ModelForm):
 
@@ -14,8 +14,3 @@ class NewCategoryFeatureKeyForm(forms.ModelForm):
         model = CategoryFeature
         fields = '__all__'
 
-class NewFeatureForProduct(forms.ModelForm):
-
-    class Meta:
-        model = ProductFeatures
-        fields = '__all__'

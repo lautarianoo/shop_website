@@ -103,8 +103,14 @@ class Customer(models.Model):
     address = models.CharField(max_length=255, verbose_name='Адрес', null=True, blank=True)
     orders = models.ManyToManyField('Order', verbose_name='Заказы покупателя', related_name='related_customer', blank=True)
 
-    #def __str__(self):
-        #return self.user
+class CompanyUser(models.Model):
+
+    user = models.OneToOneField(User, verbose_name='Владелец', on_delete=models.CASCADE, related_name='business')
+    title = models.CharField(verbose_name='Название компании', max_length=100)
+    products = models.ManyToManyField(Product, verbose_name='Продукты компании', blank=True, related_name='business')
+    avatar = models.ImageField()
+    verify = models.BooleanField(default=False)
+    rating = models.FloatField(verbose_name='Рейтинг', default=1.1)
 
 class Order(models.Model):
 
