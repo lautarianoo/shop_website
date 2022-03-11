@@ -173,9 +173,9 @@ class LoginView(CartMixin, View):
     def post(self, request, *args, **kwargs):
         form = LoginForm(request.POST or None)
         if form.is_valid():
-            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             if user:
                 login(request, user)
                 return HttpResponseRedirect('/')
@@ -194,7 +194,6 @@ class RegistrationView(CartMixin, View):
         form = RegistrationForm(request.POST or None)
         if form.is_valid():
             new_user = form.save(commit=False)
-            new_user.username = form.cleaned_data['username']
             new_user.email = form.cleaned_data['email']
             new_user.first_name = form.cleaned_data['first_name']
             new_user.last_name = form.cleaned_data['last_name']

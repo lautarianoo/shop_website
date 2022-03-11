@@ -2,18 +2,16 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, AnonymousUser
 from django.db import models
 
-User = get_user_model()
 
 class CustomerManager(BaseUserManager):
 
-    def create_user(self, email, username, password=None):
+    def create_user(self, email, password=None):
 
         if not email:
             raise ValueError('Users must have an email address')
 
         user = self.model(
             email=self.normalize_email(email),
-            username=username
         )
 
         user.set_password(password)
@@ -24,7 +22,6 @@ class CustomerManager(BaseUserManager):
 
         user = self.create_user(
             email,
-            username=username,
             password=password,
         )
         user.is_admin = True
@@ -41,13 +38,17 @@ class BaseUser(AbstractBaseUser):
     STATUS = (
         (0, 'Anonymous'),
         (1, 'NoVerify'),
-        (2, 'Verify')
+        (2, 'Verify'),
+        (3, 'STAFF'),
     )
 
     phone = models.CharField(max_length=20, verbose_name='Номер телефона', unique=True, null=True, blank=True)
     email = models.EmailField(verbose_name='Email', unique=True)
     status = models.CharField(choices=STATUS, max_length=50)
     date_add = models.DateTimeField(auto_now_add=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.phone
@@ -72,6 +73,12 @@ class BaseUser(AbstractBaseUser):
     @property
     def is_noverify(self):
         if self.status == 1:
+            return True
+        return False
+
+    @property
+    def is_staff(self):
+        if self.status == 3:
             return True
         return False
 
@@ -102,7 +109,7 @@ class CompanyUser(BaseUser):
     rating = models.FloatField(verbose_name='Рейтинг', default=1.1)
 
     def __str__(self):
-        return
+        return self.title
 
 class VisitingCustomer:
 

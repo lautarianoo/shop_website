@@ -11,7 +11,7 @@ from customers.models import Customer
 #функциональщина
 from django.utils import timezone
 
-User = get_user_model()
+
 
 #модели
 class Category(models.Model):
@@ -84,7 +84,7 @@ class CartProduct(models.Model):
 
 class Cart(models.Model):
 
-    author = models.OneToOneField(Customer, verbose_name='Владелец', on_delete=models.CASCADE, null=True, related_name='cart')
+    owner = models.OneToOneField(Customer, verbose_name='Владелец', on_delete=models.CASCADE, null=True, related_name='cart')
     products = models.ManyToManyField(CartProduct, blank=True, related_name='related_cart')
     total_products = models.PositiveIntegerField(default=0, null=True)
     total_price = models.DecimalField(max_digits=9, default=0, decimal_places=2, verbose_name='Общая цена')
