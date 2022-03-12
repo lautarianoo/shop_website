@@ -18,7 +18,7 @@ class CustomerManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username=None, password=None):
+    def create_superuser(self, email, password=None):
 
         user = self.create_user(
             email,
@@ -32,8 +32,6 @@ class BaseUser(AbstractBaseUser):
 
     class Meta:
         abstract = True
-
-    objects = CustomerManager()
 
     STATUS = (
         (0, 'Anonymous'),
@@ -87,6 +85,8 @@ class Customer(BaseUser):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=40)
     orders = models.ManyToManyField('mainapp.Order', verbose_name='Заказы покупателя', related_name='related_customer', blank=True)
+
+    objects = CustomerManager()
 
     def __str__(self):
         return self.phone

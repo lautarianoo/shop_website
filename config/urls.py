@@ -23,7 +23,8 @@ urlpatterns = [
     path('api/', include('mainapp.api.urls')),
     path('', include('mainapp.urls')),
     path('product-specs/', include('specs.urls')),
-    path('profile', include('customers.urls'))
+    path('profile/', include('customers.urls')),
+    path('address/', include('address.urls')),
 ]
 
 if settings.DEBUG:
